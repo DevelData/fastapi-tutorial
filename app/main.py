@@ -2,13 +2,13 @@ from typing import Dict, Optional
 from random import randrange
 from fastapi import FastAPI, Response, status, HTTPException, Depends
 from fastapi.params import Body
-from pydantic import BaseModel
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import time
 from sqlalchemy.orm import Session
 from app import models
 from app.database import engine, get_db
+from app.schemas import Post
 
 
 
@@ -16,10 +16,6 @@ models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 
-class Post(BaseModel):
-    title: str
-    content: str
-    published: bool = True
 
 # This caused a bug - changing to the correct password did not establish
 # normal flow.
