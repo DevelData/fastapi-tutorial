@@ -8,7 +8,7 @@ import time
 from sqlalchemy.orm import Session
 from app import models
 from app.database import engine, get_db
-from app.schemas import Post
+from app.schemas import PostCreate
 
 
 
@@ -76,7 +76,7 @@ def get_all_posts(db:Session=Depends(get_db)):
 
 
 @app.post("/posts", status_code=status.HTTP_201_CREATED)
-def create_posts(post:Post, db:Session=Depends(get_db)):
+def create_posts(post:PostCreate, db:Session=Depends(get_db)):
     #cursor.execute("""
     #               INSERT INTO posts (title, content, published)
     #               VALUES (%s, %s, %s)
@@ -130,7 +130,7 @@ def delete_post(id:int, db:Session=Depends(get_db)):
 
 
 @app.put("/posts/{id}")
-def update_post(id:int, post:Post, db:Session=Depends(get_db)):
+def update_post(id:int, post:PostCreate, db:Session=Depends(get_db)):
     #cursor.execute("""
     #                UPDATE posts
     #                SET
