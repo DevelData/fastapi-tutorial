@@ -5,7 +5,7 @@ from fastapi.params import Body
 from pydantic import BaseModel
 import psycopg2
 from psycopg2.extras import RealDictCursor
-
+import time
 
 
 app = FastAPI()
@@ -17,7 +17,9 @@ class Post(BaseModel):
     content: str
     published: bool = True
 
-
+# This caused a bug - changing to the correct password did not establish
+# normal flow.
+# while True: 
 try:
     conn = psycopg2.connect(
         host="localhost",
@@ -28,8 +30,10 @@ try:
         )
     cursor = conn.cursor()
     print("Connection to database was successful!")
+    #break
 except Exception as err:
     print(f"Connection attempt to database failed. Error: {err}")
+    #time.sleep(1.5)
 
 
 my_posts = [
