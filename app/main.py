@@ -89,7 +89,8 @@ def create_posts(post:Post):
 
 @app.get("/posts/{id}")
 def get_post(id:int):
-    post = find_post(id)
+    cursor.execute("""SELECT * FROM posts WHERE id = %(id)s""", {"id": id})
+    post = cursor.fetchone()
 
     if not post:
         raise HTTPException(
