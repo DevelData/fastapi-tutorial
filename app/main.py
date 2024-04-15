@@ -7,7 +7,7 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 import time
 from sqlalchemy.orm import Session
-import models
+from app import models
 from app.database import engine, SessionLocal
 
 
