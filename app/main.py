@@ -67,12 +67,6 @@ async def root():
     return {"message": "Welcome to my first API"}
 
 
-@app.get("/sqlalchemy")
-def test_posts(db:Session=Depends(get_db)):
-    posts = db.query(models.Post).all()
-    return {"data": posts}
-
-
 @app.get("/posts")
 def get_all_posts(db:Session=Depends(get_db)):
     #cursor.execute("SELECT * FROM posts")
