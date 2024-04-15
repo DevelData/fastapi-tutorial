@@ -140,28 +140,32 @@ def delete_post(id:int, db:Session=Depends(get_db)):
 
 
 @app.put("/posts/{id}")
-def update_post(id:int, post:Post):
-    cursor.execute("""
-                    UPDATE posts
-                    SET
-                        title = %(title)s,
-                        content = %(content)s,
-                        published = %(published)s
-                    WHERE
-                        id = %(id)s
-                    RETURNING *
-                   """,
-                   {
-                       "title": post.title,
-                       "content": post.content,
-                       "published": post.published,
-                       "id": id
-                   })
-    updated_post = cursor.fetchone()
-    conn.commit()
+def update_post(id:int, post:Post, db:Session=Depends(get_db)):
+    #cursor.execute("""
+    #                UPDATE posts
+    #                SET
+    #                    title = %(title)s,
+    #                    content = %(content)s,
+    #                    published = %(published)s
+    #                WHERE
+    #                    id = %(id)s
+    #                RETURNING *
+    #               """,
+    #               {
+    #                   "title": post.title,
+    #                   "content": post.content,
+    #                   "published": post.published,
+    #                   "id": id
+    #               })
+    #updated_post = cursor.fetchone()
+    #conn.commit()
+
+    post_query = db.query(models.Post).filter(models.Post.id == id)
     
-    if updated_post is None:
+    if post_query.first() is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"post with id '{id}' does not exist")
+    post_query.update(post.model_dump(), synchronize_session=False) # type: ignore
+    db.commit()
     
-    return {"data": updated_post}
+    return {"data": post_query.first()}
