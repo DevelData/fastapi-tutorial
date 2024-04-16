@@ -8,7 +8,7 @@ import time
 from sqlalchemy.orm import Session
 from app import models
 from app.database import engine, get_db
-from app.schemas import Post, PostCreate
+from app.schemas import Post, PostCreate, UserCreate, UserOut
 
 
 
@@ -159,3 +159,13 @@ def update_post(id:int, post:PostCreate, db:Session=Depends(get_db)):
     db.commit()
     
     return post_query.first()
+
+
+@app.post("/users", status_code=status.HTTP_201_CREATED, response_model=UserOut)
+def create_user(user:UserCreate, db:Session=Depends(get_db)):
+    new_user = models.User(**user.model_dump())
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    return new_user
