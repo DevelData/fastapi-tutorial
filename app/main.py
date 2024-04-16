@@ -3,7 +3,7 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 from app import models
 from app.database import engine
-from routers import auth, post, user
+from app.routers import auth, post, user
 
 
 
