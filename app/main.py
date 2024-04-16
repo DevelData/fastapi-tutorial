@@ -6,14 +6,13 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 import time
 from sqlalchemy.orm import Session
-from passlib.context import CryptContext
 from app import models
 from app.database import engine, get_db
 from app.schemas import Post, PostCreate, UserCreate, UserOut
+from app.utils import hash
 
 
 
-pwd_context = CryptContext(schemes="bcrypt", deprecated="auto")
 models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
@@ -165,7 +164,7 @@ def update_post(id:int, post:PostCreate, db:Session=Depends(get_db)):
 
 @app.post("/users", status_code=status.HTTP_201_CREATED, response_model=UserOut)
 def create_user(user:UserCreate, db:Session=Depends(get_db)):
-    user.password = pwd_context.hash(user.password)
+    user.password = hash(user.password)
     new_user = models.User(**user.model_dump())
     db.add(new_user)
     db.commit()
