@@ -165,6 +165,7 @@ def update_post(id:int, post:PostCreate, db:Session=Depends(get_db)):
 
 @app.post("/users", status_code=status.HTTP_201_CREATED, response_model=UserOut)
 def create_user(user:UserCreate, db:Session=Depends(get_db)):
+    user.password = pwd_context.hash(user.password)
     new_user = models.User(**user.model_dump())
     db.add(new_user)
     db.commit()
