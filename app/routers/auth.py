@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from app import models, utils
 from app.database import engine, get_db
+from app.oauth2 import create_access_token
 from app.schemas import UserLogin
 
 
@@ -28,6 +29,8 @@ def login(
             detail="Invalid credentials"
             )
     
-    # create a JWT token
-    # return the JWT token
-    return {"token": "example token"}
+    access_token = create_access_token(data={"user_id": user.id})
+    return {
+        "access_token": access_token,
+        "token_type": "bearer"
+        }
