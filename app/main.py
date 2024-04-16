@@ -8,7 +8,7 @@ import time
 from sqlalchemy.orm import Session
 from app import models
 from app.database import engine, get_db
-from app.schemas import PostCreate
+from app.schemas import Post, PostCreate
 
 
 
@@ -75,7 +75,7 @@ def get_all_posts(db:Session=Depends(get_db)):
     return posts
 
 
-@app.post("/posts", status_code=status.HTTP_201_CREATED)
+@app.post("/posts", status_code=status.HTTP_201_CREATED, response_model=Post)
 def create_posts(post:PostCreate, db:Session=Depends(get_db)):
     #cursor.execute("""
     #               INSERT INTO posts (title, content, published)
