@@ -9,10 +9,10 @@ from app.database import engine, get_db
 from app.schemas import Post, PostCreate
 
 
-router = APIRouter()
+router = APIRouter(prefix="/posts")
 
 
-@router.get("/posts", response_model=List[Post])
+@router.get("/", response_model=List[Post])
 def get_all_posts(db:Session=Depends(get_db)):
     #cursor.execute("SELECT * FROM posts")
     #posts = cursor.fetchall()
@@ -20,7 +20,7 @@ def get_all_posts(db:Session=Depends(get_db)):
     return posts
 
 
-@router.post("/posts", status_code=status.HTTP_201_CREATED, response_model=Post)
+@router.post("/", status_code=status.HTTP_201_CREATED, response_model=Post)
 def create_posts(post:PostCreate, db:Session=Depends(get_db)):
     #cursor.execute("""
     #               INSERT INTO posts (title, content, published)
@@ -38,7 +38,7 @@ def create_posts(post:PostCreate, db:Session=Depends(get_db)):
     return new_post
 
 
-@router.get("/posts/{id}", response_model=Post)
+@router.get("/{id}", response_model=Post)
 def get_post(id:int, db:Session=Depends(get_db)):
     #cursor.execute("""SELECT * FROM posts WHERE id = %(id)s""", {"id": id})
     #post = cursor.fetchone()
@@ -53,7 +53,7 @@ def get_post(id:int, db:Session=Depends(get_db)):
     return post
 
 
-@router.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_post(id:int, db:Session=Depends(get_db)):
     #cursor.execute("""
     #               DELETE FROM posts
@@ -74,7 +74,7 @@ def delete_post(id:int, db:Session=Depends(get_db)):
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-@router.put("/posts/{id}", response_model=Post)
+@router.put("/{id}", response_model=Post)
 def update_post(id:int, post:PostCreate, db:Session=Depends(get_db)):
     #cursor.execute("""
     #                UPDATE posts
