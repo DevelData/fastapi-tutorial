@@ -6,12 +6,14 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 import time
 from sqlalchemy.orm import Session
+from passlib.context import CryptContext
 from app import models
 from app.database import engine, get_db
 from app.schemas import Post, PostCreate, UserCreate, UserOut
 
 
 
+pwd_context = CryptContext(schemes="bcrypt", deprecated="auto")
 models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
