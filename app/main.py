@@ -105,7 +105,7 @@ def get_post(id:int, db:Session=Depends(get_db)):
             detail=f"Post with id {id} could not be found"
             )
 
-    return {"post_detail": post}
+    return post
 
 
 @app.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
