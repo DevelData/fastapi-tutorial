@@ -171,3 +171,17 @@ def create_user(user:UserCreate, db:Session=Depends(get_db)):
     db.refresh(new_user)
 
     return new_user
+
+
+@app.get("/users/{id}")
+def get_user(id:int, db:Session=Depends(get_db)):
+    user = db.query(models.User).filter(models.User.id == id).first()
+    print(user)
+
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"User with id '{id}' could not be found."
+            )
+
+    return user
