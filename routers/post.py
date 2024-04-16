@@ -47,7 +47,7 @@ def get_post(id:int, db:Session=Depends(get_db)):
     #post = cursor.fetchone()
     post = db.query(models.Post).filter(models.Post.id == id).first()
 
-    if not post:
+    if post is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Post with id {id} could not be found"
