@@ -8,7 +8,10 @@ from app.schemas import UserCreate, UserOut
 from app.utils import hash
 
 
-router = APIRouter(prefix="/users")
+router = APIRouter(
+    prefix="/users",
+    tags=["Users"]
+    )
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=UserOut)
