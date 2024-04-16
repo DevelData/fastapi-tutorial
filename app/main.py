@@ -1,4 +1,4 @@
-from typing import Dict, Optional
+from typing import List
 from random import randrange
 from fastapi import FastAPI, Response, status, HTTPException, Depends
 from fastapi.params import Body
@@ -67,7 +67,7 @@ async def root():
     return {"message": "Welcome to my first API"}
 
 
-@app.get("/posts")
+@app.get("/posts", response_model=List[Post])
 def get_all_posts(db:Session=Depends(get_db)):
     #cursor.execute("SELECT * FROM posts")
     #posts = cursor.fetchall()
