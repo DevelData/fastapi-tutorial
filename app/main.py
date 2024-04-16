@@ -93,7 +93,7 @@ def create_posts(post:PostCreate, db:Session=Depends(get_db)):
     return new_post
 
 
-@app.get("/posts/{id}")
+@app.get("/posts/{id}", response_model=Post)
 def get_post(id:int, db:Session=Depends(get_db)):
     #cursor.execute("""SELECT * FROM posts WHERE id = %(id)s""", {"id": id})
     #post = cursor.fetchone()
@@ -129,7 +129,7 @@ def delete_post(id:int, db:Session=Depends(get_db)):
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-@app.put("/posts/{id}")
+@app.put("/posts/{id}", response_model=Post)
 def update_post(id:int, post:PostCreate, db:Session=Depends(get_db)):
     #cursor.execute("""
     #                UPDATE posts
