@@ -1,12 +1,11 @@
 from typing import List
 
 from fastapi import APIRouter, Response, status, HTTPException, Depends
-
 from sqlalchemy.orm import Session
 
 from app import models, oauth2
 from app.database import get_db
-from app.schemas import Post, PostCreate
+from app.schemas import Post, PostCreate, UserOut
 
 
 router = APIRouter(
@@ -18,7 +17,7 @@ router = APIRouter(
 @router.get("/", response_model=List[Post])
 def get_all_posts(
     db:Session=Depends(get_db),
-    user_id:int=Depends(oauth2.get_current_user)
+    current_user:UserOut=Depends(oauth2.get_current_user)
     ):
     #cursor.execute("SELECT * FROM posts")
     #posts = cursor.fetchall()
@@ -30,7 +29,7 @@ def get_all_posts(
 def create_posts(
     post:PostCreate,
     db:Session=Depends(get_db),
-    user_id:int=Depends(oauth2.get_current_user)
+    current_user:UserOut=Depends(oauth2.get_current_user)
     ):
     #cursor.execute("""
     #               INSERT INTO posts (title, content, published)
@@ -52,7 +51,7 @@ def create_posts(
 def get_post(
     id:int,
     db:Session=Depends(get_db),
-    user_id:int=Depends(oauth2.get_current_user)
+    current_user:UserOut=Depends(oauth2.get_current_user)
     ):
     #cursor.execute("""SELECT * FROM posts WHERE id = %(id)s""", {"id": id})
     #post = cursor.fetchone()
@@ -71,7 +70,7 @@ def get_post(
 def delete_post(
     id:int,
     db:Session=Depends(get_db),
-    user_id:int=Depends(oauth2.get_current_user)):
+    current_user:UserOut=Depends(oauth2.get_current_user)):
     #cursor.execute("""
     #               DELETE FROM posts
     #               WHERE id = %(id)s
@@ -96,7 +95,7 @@ def update_post(
     id:int,
     post:PostCreate,
     db:Session=Depends(get_db),
-    user_id:int=Depends(oauth2.get_current_user)
+    current_user:UserOut=Depends(oauth2.get_current_user)
     ):
     #cursor.execute("""
     #                UPDATE posts
