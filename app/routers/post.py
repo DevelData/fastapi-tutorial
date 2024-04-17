@@ -4,7 +4,7 @@ from fastapi import APIRouter, Response, status, HTTPException, Depends
 
 from sqlalchemy.orm import Session
 
-from app import models
+from app import models, oauth2
 from app.database import get_db
 from app.schemas import Post, PostCreate
 
@@ -16,7 +16,10 @@ router = APIRouter(
 
 
 @router.get("/", response_model=List[Post])
-def get_all_posts(db:Session=Depends(get_db)):
+def get_all_posts(
+    db:Session=Depends(get_db),
+    user_id:int=Depends(oauth2.get_current_user)
+    ):
     #cursor.execute("SELECT * FROM posts")
     #posts = cursor.fetchall()
     posts = db.query(models.Post).all()
@@ -24,7 +27,11 @@ def get_all_posts(db:Session=Depends(get_db)):
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=Post)
-def create_posts(post:PostCreate, db:Session=Depends(get_db)):
+def create_posts(
+    post:PostCreate,
+    db:Session=Depends(get_db),
+    user_id:int=Depends(oauth2.get_current_user)
+    ):
     #cursor.execute("""
     #               INSERT INTO posts (title, content, published)
     #               VALUES (%s, %s, %s)
@@ -42,7 +49,11 @@ def create_posts(post:PostCreate, db:Session=Depends(get_db)):
 
 
 @router.get("/{id}", response_model=Post)
-def get_post(id:int, db:Session=Depends(get_db)):
+def get_post(
+    id:int,
+    db:Session=Depends(get_db),
+    user_id:int=Depends(oauth2.get_current_user)
+    ):
     #cursor.execute("""SELECT * FROM posts WHERE id = %(id)s""", {"id": id})
     #post = cursor.fetchone()
     post = db.query(models.Post).filter(models.Post.id == id).first()
@@ -57,7 +68,10 @@ def get_post(id:int, db:Session=Depends(get_db)):
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_post(id:int, db:Session=Depends(get_db)):
+def delete_post(
+    id:int,
+    db:Session=Depends(get_db),
+    user_id:int=Depends(oauth2.get_current_user)):
     #cursor.execute("""
     #               DELETE FROM posts
     #               WHERE id = %(id)s
@@ -78,7 +92,12 @@ def delete_post(id:int, db:Session=Depends(get_db)):
 
 
 @router.put("/{id}", response_model=Post)
-def update_post(id:int, post:PostCreate, db:Session=Depends(get_db)):
+def update_post(
+    id:int,
+    post:PostCreate,
+    db:Session=Depends(get_db),
+    user_id:int=Depends(oauth2.get_current_user)
+    ):
     #cursor.execute("""
     #                UPDATE posts
     #                SET
