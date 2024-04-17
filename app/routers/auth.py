@@ -5,12 +5,13 @@ from sqlalchemy.orm import Session
 from app import models, utils
 from app.database import get_db
 from app.oauth2 import create_access_token
+from app.schemas import Token
 
 
 router = APIRouter(tags=["Authentication"])
 
 
-@router.get("/login")
+@router.get("/login", response_model=Token)
 def login(
     user_credentials:OAuth2PasswordRequestForm=Depends(),
     db:Session=Depends(get_db)
