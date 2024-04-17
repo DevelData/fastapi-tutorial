@@ -5,7 +5,7 @@ from fastapi import APIRouter, Response, status, HTTPException, Depends
 from sqlalchemy.orm import Session
 
 from app import models
-from app.database import engine, get_db
+from app.database import get_db
 from app.schemas import Post, PostCreate
 
 
