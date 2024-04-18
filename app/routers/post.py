@@ -125,10 +125,18 @@ def update_post(
     #conn.commit()
 
     post_query = db.query(models.Post).filter(models.Post.id == id)
+    post_from_db = post_query.first()
     
-    if post_query.first() is None:
+    if post_from_db is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"post with id '{id}' does not exist")
+    
+    if post_from_db.owner_id != current_user.id: # type: ignore
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to perform requested action."
+            )
+
     post_query.update(post.model_dump(), synchronize_session=False) # type: ignore
     db.commit()
     
