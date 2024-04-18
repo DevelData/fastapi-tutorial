@@ -16,3 +16,25 @@ def get_db():
         yield db
     finally:
         db.close()
+
+
+# Not used because all db queries use SQLAlchemy instead
+# import psycopg2
+# from psycopg2.extras import RealDictCursor
+# This caused a bug - changing to the correct password did not establish
+# normal flow.
+# while True: 
+# try:
+#     conn = psycopg2.connect(
+#         host="localhost",
+#         database="fastapi",
+#         user="postgres",
+#         password="password",
+#         cursor_factory=RealDictCursor
+#         )
+#     cursor = conn.cursor()
+#     print("Connection to database was successful!")
+#     #break
+# except Exception as err:
+#     print(f"Connection attempt to database failed. Error: {err}")
+#     #time.sleep(1.5)

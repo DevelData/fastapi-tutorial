@@ -1,6 +1,4 @@
 from fastapi import FastAPI
-import psycopg2
-from psycopg2.extras import RealDictCursor
 from app import models
 from app.database import engine
 from app.routers import auth, post, user
@@ -9,26 +7,6 @@ from app.routers import auth, post, user
 
 models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
-
-
-
-# This caused a bug - changing to the correct password did not establish
-# normal flow.
-# while True: 
-try:
-    conn = psycopg2.connect(
-        host="localhost",
-        database="fastapi",
-        user="postgres",
-        password="password",
-        cursor_factory=RealDictCursor
-        )
-    cursor = conn.cursor()
-    print("Connection to database was successful!")
-    #break
-except Exception as err:
-    print(f"Connection attempt to database failed. Error: {err}")
-    #time.sleep(1.5)
 
 
 my_posts = [
