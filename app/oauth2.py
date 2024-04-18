@@ -8,6 +8,7 @@ from jose import jwt, JWTError
 from sqlalchemy.orm import Session
 
 from app import models
+from app.config import settings
 from app.schemas import TokenData
 from app.database import get_db
 
@@ -15,9 +16,9 @@ from app.database import get_db
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 # Not a good idea to store these in the code
-SECRET_KEY = "bbS4x5rGh5H5oU9R1ZCC4TndPDtZxj2tuJayybFpKzPqKgErjJPZm832K7Qsan2t"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+SECRET_KEY = settings.secret_key
+ALGORITHM = settings.algorithm
+ACCESS_TOKEN_EXPIRE_MINUTES = settings.access_token_expire_minutes
 
 
 def create_access_token(data:Dict):
