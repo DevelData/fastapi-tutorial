@@ -53,6 +53,15 @@ class Post(PostBase):
         orm_mode = True
 
 
+class PostOut(BaseModel):
+    Post: Post # Attribute name is case sensitive
+    votes: int
+
+    class Config:
+        orm_mode = True
+
+
+
 class Vote(BaseModel):
     post_id: int
     dir: conint(ge=0, le=1) #type: ignore
