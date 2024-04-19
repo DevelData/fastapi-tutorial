@@ -2,10 +2,11 @@ from typing import List
 
 from fastapi import APIRouter, Response, status, HTTPException, Depends
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 
 from app import models, oauth2
 from app.database import get_db
-from app.schemas import Post, PostCreate, UserOut
+from app.schemas import Post, PostCreate, PostOut, UserOut
 
 
 router = APIRouter(
@@ -14,7 +15,7 @@ router = APIRouter(
     )
 
 
-@router.get("/", response_model=List[Post])
+@router.get("/", response_model=List[PostOut])
 def get_all_posts(
     db:Session=Depends(get_db),
     current_user:UserOut=Depends(oauth2.get_current_user),
@@ -24,11 +25,17 @@ def get_all_posts(
     ):
     #cursor.execute("SELECT * FROM posts")
     #posts = cursor.fetchall()
-    posts = db.query(models.Post)\
-                          .filter(models.Post.title.contains(search))\
-                          .limit(limit=limit)\
-                          .offset(offset=skip).all()
-    return posts
+    results_object =  db.query(models.Post, func.count(models.Vote.post_id).label("votes"))\
+                                                     .join(models.Vote,
+                                                           models.Post.id == models.Vote.post_id,
+                                                           isouter=True)\
+                                                     .group_by(models.Post.id)\
+                                                     .filter(models.Post.title.contains(search))\
+                                                     .limit(limit=limit)\
+                                                     .offset(offset=skip).all()
+    results = list(map(lambda x: x._mapping, results_object))
+
+    return results
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=Post)
