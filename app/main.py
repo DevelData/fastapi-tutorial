@@ -4,8 +4,8 @@ from app.database import engine
 from app.routers import auth, post, user, vote
 
 
-# from app import models
-# models.Base.metadata.create_all(bind=engine)
+from app import models
+models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
