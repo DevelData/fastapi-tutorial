@@ -1,6 +1,7 @@
 version: "3"
 services:
   api:
+    # In prod env, use image name. Don't build!
     build:
       context: .
     ports:
