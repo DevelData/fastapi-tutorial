@@ -11,7 +11,7 @@ from app.schemas import Token
 router = APIRouter(tags=["Authentication"])
 
 
-@router.get("/login", response_model=Token)
+@router.post("/login", response_model=Token)
 def login(
     user_credentials:OAuth2PasswordRequestForm=Depends(),
     db:Session=Depends(get_db)
