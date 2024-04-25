@@ -1,23 +1,7 @@
 from fastapi import status
 from jose import jwt
-import pytest
 from app import schemas
 from app.config import settings
-from tests.database import client, session
-
-
-@pytest.fixture
-def test_user(client):
-    user_data = {
-        "email": "john.smith@gmail.com", 
-        "password": "password123"
-        }
-    res = client.post("/users/", json=user_data)
-
-    new_user = res.json()
-    new_user["password"] = user_data["password"]
-
-    return new_user
 
 
 def test_root(client):
