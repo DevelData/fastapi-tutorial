@@ -117,3 +117,16 @@ def test_authorized_user_update_post(authorized_client, test_posts):
     assert response.status_code == status.HTTP_200_OK
     assert updated_post.title == post_data["title"]
     assert updated_post.content == post_data["content"]
+
+
+def test_update_other_user_post(authorized_client, test_posts):
+    post_data = {
+        "title": "Updated title",
+        "content": "Updated content",
+        "id": test_posts[3].id
+        }
+    response = authorized_client.put(
+        url=f"/posts/{test_posts[3].id}",
+        json=post_data
+        )
+    assert response.status_code == status.HTTP_403_FORBIDDEN
