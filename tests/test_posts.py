@@ -140,3 +140,16 @@ def test_unauthorized_user_update_post(client, test_posts):
         }
     response = client.put(url=f"/posts/{test_posts[0].id}", json=post_data)
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+def test_update_post_non_exist(authorized_client, test_posts):
+    post_data = {
+        "title": "Updated title",
+        "content": "Updated content",
+        "id": test_posts[0].id
+        }
+    response = authorized_client.put(
+        url=f"/posts/9999999999",
+        json=post_data
+        )
+    assert response.status_code == status.HTTP_404_NOT_FOUND
