@@ -26,3 +26,11 @@ def test_vote_twice_post(authorized_client, test_posts, vote_fixture):
         json={"post_id": test_posts[3].id, "dir":1}
         )
     assert response.status_code == status.HTTP_409_CONFLICT
+
+
+def test_delete_vote(authorized_client, test_posts, vote_fixture):
+    response = authorized_client.post(
+        url="/votes",
+        json={"post_id": test_posts[3].id, "dir":0}
+        )
+    assert response.status_code == status.HTTP_201_CREATED
