@@ -101,3 +101,19 @@ def test_delete_post_non_exist(authorized_client):
 def test_delete_other_user_post(authorized_client, test_user, test_posts):
     response = authorized_client.delete(url=f"/posts/{test_posts[3].id}")
     assert response.status_code == status.HTTP_403_FORBIDDEN
+
+
+def test_authorized_user_update_post(authorized_client, test_posts):
+    post_data = {
+        "title": "Updated title",
+        "content": "Updated content",
+        "id": test_posts[0].id
+        }
+    response = authorized_client.put(
+        url=f"/posts/{test_posts[0].id}",
+        json=post_data
+        )
+    updated_post = schemas.Post(**response.json())
+    assert response.status_code == status.HTTP_200_OK
+    assert updated_post.title == post_data["title"]
+    assert updated_post.content == post_data["content"]
