@@ -81,3 +81,8 @@ def test_unauthorized_user_create_post(client):
         json={"title": "some title", "content":"some content"}
         )
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+def test_unauthorized_user_delete_Post(client, test_posts):
+    response = client.delete(url=f"/posts/{test_posts[0].id}")
+    assert response.status_code == 401
