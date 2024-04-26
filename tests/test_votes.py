@@ -34,3 +34,20 @@ def test_delete_vote(authorized_client, test_posts, vote_fixture):
         json={"post_id": test_posts[3].id, "dir":0}
         )
     assert response.status_code == status.HTTP_201_CREATED
+
+
+def test_delete_vote_non_exist(authorized_client, test_posts):
+    response = authorized_client.post(
+        url="/votes",
+        json={"post_id": test_posts[3].id, "dir":0}
+        )
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+    
+
+def test_vote_post_non_exist(authorized_client):
+    response = authorized_client.post(
+        url="/votes",
+        json={"post_id": 999999999, "dir":0}
+        )
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+    
