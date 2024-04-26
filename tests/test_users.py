@@ -42,11 +42,11 @@ def test_login_user(client, test_user):
 
 
 @pytest.mark.parametrize("email, password, status_code", [
-    ('wrongemail@gmail.com', 'password123', 403),
-    ('john.smith@gmail.com', 'wrongpassword', 403),
-    ('wrongemail@gmail.com', 'wrongpassword', 403),
-    (None, 'password123', 422),
-    ('john.smith@gmail.com', None, 422)
+    ('wrongemail@gmail.com', 'password123', status.HTTP_403_FORBIDDEN),
+    ('john.smith@gmail.com', 'wrongpassword', status.HTTP_403_FORBIDDEN),
+    ('wrongemail@gmail.com', 'wrongpassword', status.HTTP_403_FORBIDDEN),
+    (None, 'password123', status.HTTP_422_UNPROCESSABLE_ENTITY),
+    ('john.smith@gmail.com', None, status.HTTP_422_UNPROCESSABLE_ENTITY)
 ])
 def test_incorrect_login(client, email, password, status_code):
     response = client.post(
