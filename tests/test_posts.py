@@ -30,3 +30,6 @@ def test_get_one_post(authorized_client, test_posts):
     response = authorized_client.get(f"/posts/{test_posts[0].id}")
     post = schemas.PostOut(**response.json())
     assert response.status_code == status.HTTP_200_OK
+    assert post.Post.id == test_posts[0].id
+    assert post.Post.title == test_posts[0].title
+    assert post.Post.content == test_posts[0].content
