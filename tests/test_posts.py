@@ -90,4 +90,9 @@ def test_unauthorized_user_delete_post(client, test_posts):
 
 def test_delete_post_success(authorized_client, test_posts):
     response = authorized_client.delete(url=f"/posts/{test_posts[0].id}")
-    assert response.status_code == status.HTTP_204_NO_CONTENT 
+    assert response.status_code == status.HTTP_204_NO_CONTENT
+
+
+def test_delete_post_non_exist(authorized_client):
+    response = authorized_client.delete(f"/posts/999999")
+    assert response.status_code == status.HTTP_404_NOT_FOUND
