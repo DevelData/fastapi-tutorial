@@ -13,3 +13,8 @@ def test_get_all_posts(authorized_client, test_posts):
 def test_unauthorized_user_get_all_posts(client):
     response = client.get("/posts/")
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+def test_unauthorized_user_get_one_post(client, test_posts):
+    response = client.get(f"/posts/{test_posts[0].id}")
+    assert response.status_code == 401
