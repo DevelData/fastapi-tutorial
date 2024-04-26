@@ -20,9 +20,9 @@ def test_vote_on_post(authorized_client, test_user, test_posts):
     assert response.status_code == status.HTTP_201_CREATED
 
 
-# def test_vote_twice_post(authorized_client, test_posts):
-#     response = authorized_client.post(
-#         url="/votes",
-#         json={"post_id": test_posts[3].id, "dir":1}
-#         )
-#     assert response.status_code == status.HTTP_409_CONFLICT
+def test_vote_twice_post(authorized_client, test_posts, vote_fixture):
+    response = authorized_client.post(
+        url="/votes",
+        json={"post_id": test_posts[3].id, "dir":1}
+        )
+    assert response.status_code == status.HTTP_409_CONFLICT
