@@ -8,3 +8,8 @@ def test_get_all_posts(authorized_client, test_posts):
     #posts = list(map(validate, response.json()))
     assert response.status_code == status.HTTP_200_OK
     assert len(response.json()) == len(test_posts)
+
+
+def test_unauthorized_user_get_all_posts(client):
+    response = client.get("/posts/")
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
