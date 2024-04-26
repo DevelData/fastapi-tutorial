@@ -1,4 +1,5 @@
 from fastapi import status
+from app import schemas
 
 
 
@@ -23,3 +24,9 @@ def test_unauthorized_user_get_one_post(client, test_posts):
 def test_get_one_post_not_exist(authorized_client):
     response = authorized_client.get(f"/posts/88888")
     assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+def test_get_one_post(authorized_client, test_posts):
+    response = authorized_client.get(f"/posts/{test_posts[0].id}")
+    post = schemas.PostOut(**response.json())
+    assert response.status_code == status.HTTP_200_OK
