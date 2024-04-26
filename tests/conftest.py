@@ -82,7 +82,7 @@ def authorized_client(client, token):
 
 
 @pytest.fixture
-def test_posts(test_user, session):
+def test_posts(session, test_user, test_user2):
     posts_data = [{
         "title": "first title",
         "content": "first content",
@@ -97,9 +97,9 @@ def test_posts(test_user, session):
         "content": "3rd content",
         "owner_id": test_user['id']
     }, {
-        "title": "3rd title",
-        "content": "3rd content",
-        "owner_id": test_user['id']
+        "title": "User 2 post",
+        "content": "My content",
+        "owner_id": test_user2['id']
     }]
 
     create_post_model = lambda x: models.Post(**x)
