@@ -12,7 +12,7 @@ def vote_fixture(test_posts, session, test_user):
     return
 
 
-def test_vote_on_post(authorized_client, test_user, test_posts):
+def test_vote_on_post(authorized_client, test_posts):
     response = authorized_client.post(
         url="/votes",
         json={"post_id": test_posts[3].id, "dir":1}
