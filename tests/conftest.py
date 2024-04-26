@@ -53,6 +53,20 @@ def test_user(client):
 
 
 @pytest.fixture
+def test_user2(client):
+    user_data = {
+        "email": "blanket@rmail.com", 
+        "password": "password1234"
+        }
+    res = client.post("/users/", json=user_data)
+
+    new_user = res.json()
+    new_user["password"] = user_data["password"]
+
+    return new_user
+
+
+@pytest.fixture
 def token(test_user):
     return create_access_token({"user_id": test_user["id"]})
 
