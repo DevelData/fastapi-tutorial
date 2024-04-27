@@ -2,15 +2,17 @@ name: Build and Deploy code
 on: [push, pull_request]
 jobs:
     job1:
+        environment:
+            name: testing
         env:
-            DATABASE_HOSTNAME: localhost
-            DATABASE_PORT: 5432
-            DATABASE_PASSWORD: password
-            DATABASE_NAME: fastapi
-            DATABASE_USERNAME: postgres
-            ALGORITHM: HS256
-            SECRET_KEY: bbS4x5rGh5H5oU9R1ZCC4TndPDtZxj2tuJayybFpKzPqKgErjJPZm832K7Qsan2t
-            ACCESS_TOKEN_EXPIRE_MINUTES: 30
+            DATABASE_HOSTNAME: ${{secrets.DATABASE_HOSTNAME}}
+            DATABASE_PORT: ${{secrets.DATABASE_PORT}}
+            DATABASE_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
+            DATABASE_NAME: ${{secrets.DATABASE_NAME}}
+            DATABASE_USERNAME: ${{secrets.DATABASE_USERNAME}}
+            ALGORITHM: ${{secrets.ALGORITHM}}
+            SECRET_KEY: ${{secrets.SECRET_KEY}}
+            ACCESS_TOKEN_EXPIRE_MINUTES: ${{secrets.ACCESS_TOKEN_EXPIRE_MINUTES}}
         runs-on: ubuntu-22.04
         steps:
             - name: pulling git repo
