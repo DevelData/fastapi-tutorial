@@ -1,7 +1,7 @@
 name: Build and Deploy code
 on: [push, pull_request]
 jobs:
-    job1:
+    build:
         environment:
             name: testing
         env:
@@ -13,7 +13,6 @@ jobs:
             ALGORITHM: ${{secrets.ALGORITHM}}
             SECRET_KEY: ${{secrets.SECRET_KEY}}
             ACCESS_TOKEN_EXPIRE_MINUTES: ${{secrets.ACCESS_TOKEN_EXPIRE_MINUTES}}
-        runs-on: ubuntu-22.04
         services:
             postgres:
                 image: postgres
@@ -27,6 +26,7 @@ jobs:
                     --health-retries 5
                 ports:
                     - 5432:5432
+        runs-on: ubuntu-22.04
         steps:
             - name: pulling git repo
               uses: actions/checkout@v4
