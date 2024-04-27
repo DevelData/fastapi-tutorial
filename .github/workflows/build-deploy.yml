@@ -26,7 +26,6 @@ jobs:
                     --health-interval 10s
                     --health-timeout 5s
                     --health-retries 5
-            run: \conninfo
         runs-on: ubuntu-22.04
         steps:
             - name: pulling git repo
