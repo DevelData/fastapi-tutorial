@@ -3,6 +3,7 @@
 
 # Cache
 **/__pycache__/
+**/.pytest_cache/
 
 # Environment variables
 .env
