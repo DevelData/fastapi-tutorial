@@ -5,20 +5,20 @@ jobs:
         environment:
             name: testing
         env:
-            DATABASE_HOSTNAME: ${{vars.DATABASE_HOSTNAME}}
-            DATABASE_PORT: ${{vars.DATABASE_PORT}}
-            DATABASE_PASSWORD: ${{vars.DATABASE_PASSWORD}}
+            DATABASE_HOSTNAME: ${{secrets.DATABASE_HOSTNAME}}
+            DATABASE_PORT: ${{secrets.DATABASE_PORT}}
+            DATABASE_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
             DATABASE_NAME: ${{vars.TEST_DATABASE_NAME}}
-            DATABASE_USERNAME: ${{vars.DATABASE_USERNAME}}
-            ALGORITHM: ${{vars.ALGORITHM}}
-            SECRET_KEY: ${{vars.SECRET_KEY}}
-            ACCESS_TOKEN_EXPIRE_MINUTES: ${{vars.ACCESS_TOKEN_EXPIRE_MINUTES}}
+            DATABASE_USERNAME: ${{secrets.DATABASE_USERNAME}}
+            ALGORITHM: ${{secrets.ALGORITHM}}
+            SECRET_KEY: ${{secrets.SECRET_KEY}}
+            ACCESS_TOKEN_EXPIRE_MINUTES: ${{secrets.ACCESS_TOKEN_EXPIRE_MINUTES}}
             TEST_DATABASE_NAME: ${{vars.TEST_DATABASE_NAME}}
         services:
             postgres:
                 image: postgres
                 env:
-                    POSTGRES_PASSWORD: ${{vars.DATABASE_PASSWORD}}
+                    POSTGRES_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
                     POSTGRES_DB: ${{vars.TEST_DATABASE_NAME}}
                 ports:
                     - 5432:5432
