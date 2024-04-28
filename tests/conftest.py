@@ -2,6 +2,7 @@ from fastapi.testclient import TestClient
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy_utils import database_exists, create_database, drop_database
 from app import models
 from app.config import settings
 from app.database import get_db, Base
@@ -14,8 +15,17 @@ engine = create_engine(SQLALCHEMY_DATABASE_URL)
 TestingSessionLocal = sessionmaker(autoflush=False, autocommit=False, bind=engine)
 
 
+@pytest.fixture(scope="session")
+def database():
+    if not database_exists(engine.url):
+        create_database(engine.url)
+    
+    yield None
+
+    drop_database(engine.url)
+
 @pytest.fixture(scope="function")
-def session():
+def session(database):
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
     db = TestingSessionLocal()
