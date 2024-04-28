@@ -8,7 +8,7 @@ jobs:
             DATABASE_HOSTNAME: ${{vars.DATABASE_HOSTNAME}}
             DATABASE_PORT: ${{vars.DATABASE_PORT}}
             DATABASE_PASSWORD: ${{vars.DATABASE_PASSWORD}}
-            DATABASE_NAME: ${{vars.DATABASE_NAME}}
+            DATABASE_NAME: ${{vars.TEST_DATABASE_NAME}}
             DATABASE_USERNAME: ${{vars.DATABASE_USERNAME}}
             ALGORITHM: ${{vars.ALGORITHM}}
             SECRET_KEY: ${{vars.SECRET_KEY}}
@@ -18,7 +18,7 @@ jobs:
                 image: postgres
                 env:
                     POSTGRES_PASSWORD: ${{vars.DATABASE_PASSWORD}}
-                    POSTGRES_DB: ${{vars.DATABASE_NAME}}
+                    POSTGRES_DB: ${{vars.TEST_DATABASE_NAME}}
                 ports:
                     - 5432:5432
                 options: >-
